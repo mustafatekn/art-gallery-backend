@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const moongose = require("mongoose");
-const { signUp } = require("./controllers/auth");
+const { signUp, signIn } = require("./controllers/auth");
 require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/auth/signup', signUp);
+app.get('/auth/signin',signIn);
 
 const mongodbConnection = process.env.MONGODB_CONNECTION_STRING;
 
