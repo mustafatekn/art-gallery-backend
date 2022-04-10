@@ -2,12 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
 const User = require("../models/User");
-const {
-  isEmpty,
-  isMatched,
-  isEmail,
-  isAuthorized,
-} = require("../util/validate");
+const { isEmpty, isMatched, isEmail, isAdmin } = require("../util/validate");
 
 module.exports = {
   signUp: async (req, res) => {
@@ -50,8 +45,13 @@ module.exports = {
     if (Object.keys(emptyErrors).length > 0)
       return res.status(400).json(emptyErrors);
 
-    const user = await User.findOne({ where: { username, password } });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    const user = await User.findOne({ username });
+
+    const correctPassword =
+      user && (await bcrypt.compare(password, user.password));
+
+    if (!user && !correctPassword)
+      return res.status(404).json({ error: "Incorrect username or password" });
 
     const role = user.get("role");
 
@@ -67,7 +67,7 @@ module.exports = {
     const token = req.get("Authorization");
     const userInfo = jwt_decode(token);
 
-    const authorizationErrors = isAuthorized(userInfo.role);
+    const authorizationErrors = isAdmin(userInfo.role);
     const emptyErrors = isEmpty({ username, email, password, role });
     const emailErrors = isEmail(email);
 
@@ -95,5 +95,20 @@ module.exports = {
       .catch((error) => {
         return res.status(500).json(error);
       });
+  },
+
+  deleteUser: async (req, res) => {
+    const { username } = req.params;
+    const token = req.get("Authorization");
+    const userInfo = jwt_decode(token);
+
+    const authorizationErrors = isAdmin(userInfo.role)
+    if (Object.keys(authorizationErrors).length > 0) return res.status(401).json(authorizationErrors);
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    User.findOneAndDelete({ username }).then((result) => {
+      return res.status(200).json(result);
+    });
   },
 };
