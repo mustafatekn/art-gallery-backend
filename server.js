@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const moongose = require("mongoose");
-const { signUp, signIn, createUser, deleteUser } = require("./controllers/auth");
+const { signUp, signIn, createUser, deleteUser, updateUser } = require("./controllers/auth");
 require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +12,8 @@ app.use(cors());
 app.post('/auth/signup', signUp);
 app.get('/auth/signin',signIn);
 app.post('/auth/createuser',createUser);
-app.delete('/auth/deleteuser/:username', deleteUser);
+app.delete('/auth/user/:id', deleteUser);
+app.put('/auth/user/:id', updateUser);
 
 const mongodbConnection = process.env.MONGODB_CONNECTION_STRING;
 
