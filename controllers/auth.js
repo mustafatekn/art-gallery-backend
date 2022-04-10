@@ -2,7 +2,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
 const User = require("../models/User");
-const { isEmpty, isMatched, isEmail } = require("../util/validate");
+const {
+  isEmpty,
+  isMatched,
+  isEmail,
+  isAuthorized,
+} = require("../util/validate");
 
 module.exports = {
   signUp: async (req, res) => {
@@ -59,6 +64,10 @@ module.exports = {
 
   createUser: async (req, res) => {
     const { username, email, password, role } = req.body;
+    const token = req.get("Authorization");
+    const userInfo = jwt_decode(token);
+
+    const authorizationErrors = isAuthorized(userInfo.role);
     const emptyErrors = isEmpty({ username, email, password, role });
     const emailErrors = isEmail(email);
 
@@ -66,12 +75,8 @@ module.exports = {
       return res.status(400).json(emptyErrors);
     if (Object.keys(emailErrors).length > 0)
       return res.status(400).json(emailErrors);
-
-    const token = req.get("Authorization");
-    const userInfo = jwt_decode(token);
-
-    if (userInfo.role !== "admin")
-      return res.status(401).json({ error: "You are not authorized." });
+    if (Object.keys(authorizationErrors).length > 0)
+      return res.status(401).json(authorizationErrors);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

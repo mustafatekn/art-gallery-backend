@@ -36,3 +36,9 @@ exports.isEmail = (email) => {
 
   return errors;
 };
+
+exports.isAuthorized = (role) => {
+  let errors = {};
+  if(role !== "admin") errors.authorization = 'Unauthorized request';
+  return errors;
+}
