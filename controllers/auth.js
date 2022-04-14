@@ -12,12 +12,15 @@ module.exports = {
     const matchedErrors = isMatched({ password, confirmPassword });
     const emailErrors = isEmail(email);
 
-    if (Object.keys(emptyErrors).length > 0) return res.status(400).json(emptyErrors);
-    if (Object.keys(emailErrors).length > 0) return res.status(400).json(emailErrors);
-    if (Object.keys(matchedErrors).length > 0) return res.status(400).json(matchedErrors);
+    if (Object.keys(emptyErrors).length > 0)
+      return res.status(400).json(emptyErrors);
+    if (Object.keys(emailErrors).length > 0)
+      return res.status(400).json(emailErrors);
+    if (Object.keys(matchedErrors).length > 0)
+      return res.status(400).json(matchedErrors);
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const user = new User({
       username,
       email,
@@ -39,12 +42,15 @@ module.exports = {
     const { username, password } = req.body;
     const emptyErrors = isEmpty({ username, password });
 
-    if (Object.keys(emptyErrors).length > 0) return res.status(400).json(emptyErrors);
+    if (Object.keys(emptyErrors).length > 0)
+      return res.status(400).json(emptyErrors);
 
     const user = await User.findOne({ username });
-    const correctPassword = user && (await bcrypt.compare(password, user.password));
+    const correctPassword =
+      user && (await bcrypt.compare(password, user.password));
 
-    if (!user || !correctPassword) return res.status(404).json({ error: "Incorrect username or password" });
+    if (!user || !correctPassword)
+      return res.status(404).json({ error: "Incorrect username or password" });
 
     const role = user.get("role");
     const token = jwt.sign({ username, role }, process.env.JWT_SECRET, {
@@ -125,12 +131,13 @@ module.exports = {
     if (Object.keys(matchedErrors).length > 0)
       return res.status(400).json(matchedErrors);
 
-    // const authorizationErrors = isAdmin(userInfo.role);
+    const authorizationErrors = isAdmin(userInfo.role);
 
-    // if (Object.keys(authorizationErrors).length > 0)
-    //   return res.status(401).json(authorizationErrors);
+    if (Object.keys(authorizationErrors).length > 0)
+      return res.status(401).json(authorizationErrors);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    User.findByIdAndUpdate(id, { username, email, password, role }).then(
+    User.findByIdAndUpdate(id, { username, email, password:hashedPassword, role }).then(
       (result) => {
         return res.status(200).json(result);
       }

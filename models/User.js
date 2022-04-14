@@ -20,8 +20,8 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   { timestamps: true }
 );
