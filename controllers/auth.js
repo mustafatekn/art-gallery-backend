@@ -123,6 +123,7 @@ module.exports = {
       confirmPassword,
       role,
     });
+
     const matchedErrors = isMatched({ password, confirmPassword });
 
     if (Object.keys(emptyErrors).length > 0)
@@ -135,12 +136,22 @@ module.exports = {
 
     if (Object.keys(authorizationErrors).length > 0)
       return res.status(401).json(authorizationErrors);
+
+    const userForUpdate = await User.findById(id);
+    const hierarchyErrors = await isAdmin(userForUpdate);
+
+    if (Object.keys(hierarchyErrors).length > 0)
+      return res.status(401).json(hierarchyErrors);
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    User.findByIdAndUpdate(id, { username, email, password:hashedPassword, role }).then(
-      (result) => {
-        return res.status(200).json(result);
-      }
-    );
+    User.findByIdAndUpdate(id, {
+      username,
+      email,
+      password: hashedPassword,
+      role,
+    }).then((result) => {
+      return res.status(200).json(result);
+    });
   },
 };
