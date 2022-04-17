@@ -27,14 +27,12 @@ module.exports = {
       role: "member",
     });
 
-    user
-      .save()
-      .then((result) => {
-        return res.status(201).json(result);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
+    try {
+      const userSignedUp = await user.save();
+      return res.status(201).json(userSignedUp);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   },
 
   signIn: async (req, res) => {
@@ -63,6 +61,7 @@ module.exports = {
   createUser: async (req, res) => {
     const { username, email, password, role } = req.body;
     const token = req.get("Authorization");
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
     const userInfo = jwt_decode(token);
     const authorizationErrors = isAdmin(userInfo.role);
     const emptyErrors = isEmpty({ username, email, password, role });
@@ -87,19 +86,19 @@ module.exports = {
       role,
     });
 
-    user
-      .save()
-      .then((result) => {
-        return res.status(201).json(result);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
+    try {
+      const createdUser = await user.save();
+      return res.status(201).json(createdUser);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   },
 
   deleteUser: async (req, res) => {
     const { id } = req.params;
     const token = req.get("Authorization");
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+
     const userInfo = jwt_decode(token);
     const userFromRequest = await User.findById(userInfo.userId);
     const authorizationErrors = isAdmin(userInfo.role);
@@ -109,15 +108,19 @@ module.exports = {
     if (!userFromRequest)
       return res.status(401).json({ error: "Unauthorized" });
 
-    User.findByIdAndDelete(id).then((result) => {
-      return res.status(200).json(result);
-    });
+    try {
+      const deletedUser = await User.findByIdAndDelete();
+      return res.status(200).json(deletedUser);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   },
 
   updateUser: async (req, res) => {
     const { username, email, password, confirmPassword, role } = req.body;
     const { id } = req.params;
     const token = req.get("Authorization");
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
     const userInfo = jwt_decode(token);
     const userFromRequest = await User.findById(userInfo.userId);
 
@@ -151,13 +154,16 @@ module.exports = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    User.findByIdAndUpdate(id, {
-      username,
-      email,
-      password: hashedPassword,
-      role,
-    }).then((result) => {
-      return res.status(200).json(result);
-    });
+    try {
+      const updatedUser = await User.findByIdAndUpdate(id, {
+        username,
+        email,
+        password: hashedPassword,
+        role,
+      });
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   },
 };

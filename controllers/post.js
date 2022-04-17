@@ -9,12 +9,9 @@ module.exports = {
     const token = req.get("Authorization");
     const userInfo = jwt_decode(token);
     const emptyErrors = isEmpty({ title, text, url, imageUrl });
-    const authorizationErrors = isAdmin(userInfo.role);
 
     if (Object.keys(emptyErrors).length > 0)
       return res.status(400).json(emptyErrors);
-    if (Object.keys(authorizationErrors).length > 0)
-      return res.status(401).json(authorizationErrors);
 
     const userFromRequest = await User.findById(userInfo.userId);
 
@@ -33,13 +30,33 @@ module.exports = {
       },
     });
 
-    post
-      .save()
-      .then((result) => {
-        return res.status(201).json(result);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
+    try {
+      const createdPost = await post.save();
+      return res.status(201).json(createdPost);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  },
+
+  deletePost: async (req, res) => {
+    const { id } = req.params;
+    const token = req.get("Authorization");
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+    const userInfo = jwt_decode(token);
+
+    const userFromRequest = await User.findById(userInfo.userId);
+
+    if (!userFromRequest)
+      return res.status(401).json({ error: "Unauthorized" });
+
+    const post = await Post.findById(id);
+    if (!post) return res.status(404).json({ error: "Not Found" });
+
+    try {
+      const deletedPost = await Post.findByIdAndDelete(id);
+      return res.status(200).json(deletedPost);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   },
 };

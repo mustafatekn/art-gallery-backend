@@ -6,7 +6,7 @@ const {
   deleteUser,
   updateUser,
 } = require("../controllers/auth");
-const { createPost } = require("../controllers/post");
+const { createPost, deletePost } = require("../controllers/post");
 
 const router = express.Router();
 
@@ -17,5 +17,5 @@ router.post("/auth/createuser", createUser);
 router.delete("/auth/user/:id", deleteUser);
 router.put("/auth/user/:id", updateUser);
 router.post('/post/createPost',createPost);
-
+router.delete('/post/:id', deletePost);
 module.exports = router;
