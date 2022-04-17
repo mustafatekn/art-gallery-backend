@@ -9,7 +9,7 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    content: {
+    text: {
       type: String,
       required: true,
     },
@@ -18,12 +18,12 @@ const postSchema = new Schema(
       required: true,
     },
     imageUrl: {
-      type: String,
+      type:String,
       required: true,
     },
     user: {
-      type: User,
-      required,
+      type: Object,
+      required: true,
     },
   },
   { timestamps: true }
