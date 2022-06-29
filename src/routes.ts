@@ -1,12 +1,12 @@
-const express = require('express')
-const {
+import express from 'express'
+import {
     signUp,
     signIn,
     createNewUser,
     deleteUser,
     updateUser,
-} = require('../controllers/auth')
-const { createPost, removePost } = require('../controllers/post')
+} from './user/user.controller'
+import { createNewPost, removePost } from './post/post.controller'
 
 export const router = express.Router()
 
@@ -16,5 +16,5 @@ router.get('/auth/signin', signIn)
 router.post('/auth/createuser', createNewUser)
 router.delete('/auth/user/:id', deleteUser)
 router.put('/auth/user/:id', updateUser)
-router.post('/post/createPost', createPost)
+router.post('/post/createPost', createNewPost)
 router.delete('/post/:id', removePost)
