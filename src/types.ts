@@ -34,5 +34,6 @@ export type Error = {
     [key: string]: string
 }
 
+export type Env = string | undefined
 export type Req = Request
 export type Res = Response

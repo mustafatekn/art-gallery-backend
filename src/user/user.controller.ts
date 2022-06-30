@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import jwt_decode from 'jwt-decode'
 import { isEmpty, isMatched, isEmail, isAdmin } from '../util/validate'
-import { UserData, Req, Res } from '../types'
+import { UserData, Req, Res, Env } from '../types'
 import {
     createUser,
     getUserById,
@@ -21,7 +21,7 @@ export const signUp = async (req: Req, res: Res) => {
     })
     const matchedErrors = isMatched({ password, confirmPassword })
     const emailErrors = isEmail(email)
-    
+
     if (Object.keys(emptyErrors).length > 0)
         return res.status(400).json(emptyErrors)
     if (Object.keys(emailErrors).length > 0)
@@ -60,7 +60,7 @@ export const signIn = async (req: Req, res: Res) => {
 
     const userId = user.get('id')
     const role = user.get('role')
-    const jwtSecret: string = process.env.JWT_SECRET as string
+    const jwtSecret: Env = process.env.JWT_SECRET as string
     const token = jwt.sign({ userId, username, role }, jwtSecret, {
         expiresIn: '7d',
     })
