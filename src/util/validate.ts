@@ -1,6 +1,6 @@
-import { Data, Error } from '../types';
+import { DataForValidation, Error } from '../types';
 
-export const isEmpty = (data: Data) => {
+export const isEmpty = (data: DataForValidation) => {
     let errors: Error = {}
 
     Object.entries(data).map((entry) => {
@@ -15,7 +15,7 @@ export const isEmpty = (data: Data) => {
     return errors
 }
 
-export const isMatched = (data: object) => {
+export const isMatched = (data: DataForValidation) => {
     let errors: Error = {}
     const entries = Object.entries(data)
 

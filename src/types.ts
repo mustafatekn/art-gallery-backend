@@ -18,7 +18,7 @@ export type PostData = {
     }
 }
 
-export type Data = {
+export type DataForValidation = {
     username?: string
     email?: string
     password?: string
