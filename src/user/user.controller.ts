@@ -1,4 +1,8 @@
-import { Request, Response } from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import jwt_decode from 'jwt-decode'
+import { isEmpty, isMatched, isEmail, isAdmin } from '../util/validate'
+import { UserData, Req, Res } from '../types'
 import {
     createUser,
     getUserById,
@@ -6,18 +10,8 @@ import {
     removeUserById,
     updateUserById,
 } from './user.service'
-import { isEmpty, isMatched, isEmail, isAdmin } from '../util/validate'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import jwt_decode from 'jwt-decode'
 
-type userInfo = {
-    userId: string
-    username: string
-    role: string
-}
-
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (req: Req, res: Res) => {
     const { username, email, password, confirmPassword } = req.body
     const emptyErrors = isEmpty({
         username,
@@ -27,7 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
     })
     const matchedErrors = isMatched({ password, confirmPassword })
     const emailErrors = isEmail(email)
-
+    
     if (Object.keys(emptyErrors).length > 0)
         return res.status(400).json(emptyErrors)
     if (Object.keys(emailErrors).length > 0)
@@ -50,7 +44,7 @@ export const signUp = async (req: Request, res: Response) => {
     }
 }
 
-export const signIn = async (req: Request, res: Response) => {
+export const signIn = async (req: Req, res: Res) => {
     const { username, password } = req.body
     const emptyErrors = isEmpty({ username, password })
 
@@ -74,14 +68,11 @@ export const signIn = async (req: Request, res: Response) => {
     return res.status(200).json({ ...user.toJSON(), token })
 }
 
-export const createNewUser = async (req: Request, res: Response) => {
+export const createNewUser = async (req: Req, res: Res) => {
     const { username, email, password, role } = req.body
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const userInfo: {
-        userId: string
-        role: string
-    } = jwt_decode(token)
+    const userInfo: UserData = jwt_decode(token)
     const authorizationErrors = isAdmin(userInfo.role)
     const emptyErrors = isEmpty({ username, email, password, role })
     const emailErrors = isEmail(email)
@@ -110,12 +101,12 @@ export const createNewUser = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
 
-    const userInfo: userInfo = jwt_decode(token)
+    const userInfo: UserData = jwt_decode(token)
     const userFromRequest = await getUserById(userInfo.userId)
     const authorizationErrors = isAdmin(userInfo.role)
 
@@ -131,12 +122,12 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Req, res: Res) => {
     const { username, email, password, confirmPassword, role } = req.body
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const userInfo: userInfo = jwt_decode(token)
+    const userInfo: UserData = jwt_decode(token)
     const userFromRequest = await getUserById(userInfo.userId)
 
     const emptyErrors = isEmpty({
@@ -161,7 +152,7 @@ export const updateUser = async (req: Request, res: Response) => {
         return res.status(401).json(authorizationErrors)
 
     const userForUpdate = await getUserById(id)
-    const hierarchyErrors = await isAdmin(userForUpdate)
+    const hierarchyErrors = isAdmin(userForUpdate)
 
     if (Object.keys(hierarchyErrors).length > 0)
         return res.status(401).json(hierarchyErrors)

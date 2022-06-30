@@ -16,5 +16,7 @@ router.get('/auth/signin', signIn)
 router.post('/auth/createuser', createNewUser)
 router.delete('/auth/user/:id', deleteUser)
 router.put('/auth/user/:id', updateUser)
+
+//Post Routes
 router.post('/post/createPost', createNewPost)
 router.delete('/post/:id', removePost)

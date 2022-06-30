@@ -1,9 +1,7 @@
-type Errors = {
-    [key: string]: string
-}
+import { Data, Error } from '../types';
 
-export const isEmpty = (data: object) => {
-    let errors: Errors = {}
+export const isEmpty = (data: Data) => {
+    let errors: Error = {}
 
     Object.entries(data).map((entry) => {
         if (entry[1].trim() === '') {
@@ -18,7 +16,7 @@ export const isEmpty = (data: object) => {
 }
 
 export const isMatched = (data: object) => {
-    let errors: Errors = {}
+    let errors: Error = {}
     const entries = Object.entries(data)
 
     if (entries[0][1] !== entries[1][1]) {
@@ -32,7 +30,7 @@ export const isMatched = (data: object) => {
 }
 
 export const isEmail = (email: string) => {
-    let errors: Errors = {}
+    let errors: Error = {}
 
     const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -42,7 +40,7 @@ export const isEmail = (email: string) => {
 }
 
 export const isAdmin = (role: string) => {
-    let errors: Errors = {}
+    let errors: Error = {}
     if (role !== 'admin') errors.authorization = 'Unauthorized request'
     return errors
 }

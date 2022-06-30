@@ -1,4 +1,5 @@
 import Post from './post.model'
+import { PostData } from '../types'
 
 export const createPost = async ({
     title,
@@ -6,13 +7,7 @@ export const createPost = async ({
     url,
     imageUrl,
     user,
-}: {
-    title: string
-    text: string
-    url: string
-    imageUrl: string
-    user: { id: string; username: string; role: string }
-}) => {
+}: PostData) => {
     const post = new Post({
         title,
         text,
@@ -25,4 +20,8 @@ export const createPost = async ({
 
 export const removePostById = async (id: string) => {
     return await Post.findByIdAndDelete(id)
+}
+
+export const getPostById = async (id: string) => {
+    return await Post.findById(id)
 }
