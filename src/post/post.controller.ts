@@ -45,11 +45,11 @@ export const removePost = async (req: Req, res: Res) => {
 
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
 
-    const post = await getPostById(id)
+    const post: PostData = await getPostById(id)
     if (!post) return res.status(404).json({ error: 'Not Found' })
 
     try {
-        const deletedPost = await removePostById(id)
+        const deletedPost: PostData = await removePostById(id)
         return res.status(200).json(deletedPost)
     } catch (error) {
         return res.status(500).json(error)

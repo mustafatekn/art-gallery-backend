@@ -7,6 +7,7 @@ export type UserData = {
 }
 
 export type PostData = {
+    id?: string,
     title: string
     text: string
     url: string

@@ -5,6 +5,7 @@ import { isEmpty, isMatched, isEmail, isAdmin } from '../util/validate'
 import { UserData, Req, Res, Env } from '../types'
 import {
     createUser,
+    getUserByEmail,
     getUserById,
     getUserByUsername,
     removeUserById,
@@ -85,6 +86,12 @@ export const createNewUser = async (req: Req, res: Res) => {
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
     if (Object.keys(authorizationErrors).length > 0)
         return res.status(401).json(authorizationErrors)
+
+    const userFromUsername = await getUserByUsername(username)
+    const userFromEmail = await getUserByEmail(email)
+    
+    if (userFromUsername || userFromEmail)
+        return res.status(404).json({ error: 'This user already exists' })
 
     const hashedPassword = await bcrypt.hash(password, 10)
 

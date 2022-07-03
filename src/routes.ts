@@ -13,7 +13,7 @@ export const router = express.Router()
 //Auth Routes
 router.post('/auth/signup', signUp)
 router.get('/auth/signin', signIn)
-router.post('/auth/createuser', createNewUser)
+router.post('/auth/createUser', createNewUser)
 router.delete('/auth/user/:id', deleteUser)
 router.put('/auth/user/:id', updateUser)
 
