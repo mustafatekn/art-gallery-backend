@@ -30,7 +30,7 @@ export const isMatched = (data: DataForValidation) => {
 }
 
 export const isEmail = (email: string) => {
-    let errors: Error = {}
+    const errors: Error = {}
 
     const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -40,7 +40,7 @@ export const isEmail = (email: string) => {
 }
 
 export const isAdmin = (role: string) => {
-    let errors: Error = {}
+    const errors: Error = {}
     if (role !== 'admin') errors.authorization = 'Unauthorized request'
     return errors
 }

@@ -4,12 +4,13 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "extends": ["eslint:recommended", "prettier"],
+    "extends": ["tslint:recommended", "prettier"],
     "env": {
         "es2021": true,
         "node": true
     },
     "rules": {
-        // "no-console": "error"
+        "typedef-whitespace": false,
+        "no-console": false
     }
 }
