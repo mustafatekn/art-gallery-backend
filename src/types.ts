@@ -4,12 +4,12 @@ export type UserData = {
     userId: string
     username: string
     role: string
+    email: string
 }
 
 export type PostData = {
-    id?: string,
+    id?: string
     title: string
-    text: string
     url: string
     imageUrl: string
     user: {
@@ -19,6 +19,14 @@ export type PostData = {
     }
 }
 
+export type UserRegister = {
+    username: string
+    email: string
+    password: string
+    confirmPassword: string
+    role: string
+}
+
 export type DataForValidation = {
     username?: string
     email?: string
@@ -26,7 +34,6 @@ export type DataForValidation = {
     confirmPassword?: string
     role?: string
     title?: string
-    text?: string
     url?: string
     imageUrl?: string
 }

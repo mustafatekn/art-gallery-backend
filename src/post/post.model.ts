@@ -7,10 +7,6 @@ const postSchema = new Schema(
             type: String,
             required: true,
         },
-        text: {
-            type: String,
-            required: true,
-        },
         url: {
             type: String,
             required: true,
@@ -28,4 +24,4 @@ const postSchema = new Schema(
 )
 
 const Post = mongoose.model('Post', postSchema)
-export default Post;
+export default Post

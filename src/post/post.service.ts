@@ -1,16 +1,9 @@
 import Post from './post.model'
 import { PostData } from '../types'
 
-export const createPost = async ({
-    title,
-    text,
-    url,
-    imageUrl,
-    user,
-}: PostData) => {
+export const createPost = async ({ title, url, imageUrl, user }: PostData) => {
     const post = new Post({
         title,
-        text,
         url,
         imageUrl,
         user,

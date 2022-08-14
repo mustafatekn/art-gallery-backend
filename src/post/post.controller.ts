@@ -3,24 +3,24 @@ import { isEmpty } from '../util/validate'
 import jwt_decode from 'jwt-decode'
 import { UserData, PostData, Req, Res } from '../types'
 import { getUserById } from '../user/user.service'
+// import { v2 as cloudinary } from 'cloudinary'
 
 export const createNewPost = async (req: Req, res: Res) => {
-    const { title, text, url, imageUrl } = req.body
+    const { title, url, imageUrl } = req.body
     const token = req.get('Authorization')
     const userInfo: UserData = jwt_decode(token!)
-    const emptyErrors = isEmpty({ title, text, url, imageUrl })
+    const emptyErrors = isEmpty({ title, url, imageUrl })
 
     if (Object.keys(emptyErrors).length > 0)
         return res.status(400).json(emptyErrors)
 
-    const userFromRequest = await getUserById(userInfo.userId)
+    const userFromRequest: UserData = await getUserById(userInfo.userId)
 
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
 
     try {
         const createdPost: PostData = await createPost({
             title,
-            text,
             url,
             imageUrl,
             user: {
@@ -41,7 +41,7 @@ export const removePost = async (req: Req, res: Res) => {
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
     const userInfo: UserData = jwt_decode(token)
 
-    const userFromRequest = await getUserById(userInfo.userId)
+    const userFromRequest: UserData = await getUserById(userInfo.userId)
 
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
 
@@ -55,3 +55,12 @@ export const removePost = async (req: Req, res: Res) => {
         return res.status(500).json(error)
     }
 }
+
+// const uploadImage = async (image : File) => {
+//     return new Promise((resolve, reject) => {
+//         cloudinary.uploader.upload(image, (err: Error, url : string) => {
+//             if (err) return reject(err)
+//             return resolve(url)
+//         })
+//     })
+// }
