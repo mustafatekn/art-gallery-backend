@@ -1,5 +1,7 @@
-exports.isEmpty = (data) => {
-    let errors = {}
+import { DataForValidation, Error } from '../types';
+
+export const isEmpty = (data: DataForValidation) => {
+    let errors: Error = {}
 
     Object.entries(data).map((entry) => {
         if (entry[1].trim() === '') {
@@ -13,8 +15,8 @@ exports.isEmpty = (data) => {
     return errors
 }
 
-exports.isMatched = (data) => {
-    let errors = {}
+export const isMatched = (data: DataForValidation) => {
+    let errors: Error = {}
     const entries = Object.entries(data)
 
     if (entries[0][1] !== entries[1][1]) {
@@ -27,8 +29,8 @@ exports.isMatched = (data) => {
     return errors
 }
 
-exports.isEmail = (email) => {
-    let errors = {}
+export const isEmail = (email: string) => {
+    const errors: Error = {}
 
     const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -37,8 +39,8 @@ exports.isEmail = (email) => {
     return errors
 }
 
-exports.isAdmin = (role) => {
-    let errors = {}
+export const isAdmin = (role: string) => {
+    const errors: Error = {}
     if (role !== 'admin') errors.authorization = 'Unauthorized request'
     return errors
 }
