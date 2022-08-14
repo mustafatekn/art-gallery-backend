@@ -2,14 +2,15 @@
     "name": "art-gallery-backend",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "ts-node-dev src/app.ts",
         "format:check": "prettier --check src/**",
         "format:write": "prettier --write src/**",
         "lint:check": "tslint src/**",
-        "lint:fix": "tslint --fix src/**"
+        "lint:fix": "tslint --fix src/**",
+        "start": "tsc && node src/app.js"
     },
     "keywords": [],
     "author": "",
