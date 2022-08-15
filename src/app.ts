@@ -13,14 +13,16 @@ app.use(cors())
 app.use('/', router)
 
 const mongodbConnection: Env = process.env.MONGODB_CONNECTION_STRING
-moongose
-    .connect(mongodbConnection!, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    } as ConnectOptions)
-    .then(() => {
-        app.listen(5000)
-    })
-    .catch((err) => {
-        console.log(err)
-    })
+if (mongodbConnection) {
+    moongose
+        .connect(mongodbConnection, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        } as ConnectOptions)
+        .then(() => {
+            app.listen(5000)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+}
