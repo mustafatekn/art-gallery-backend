@@ -34,7 +34,7 @@ export const signUp = async (req: Req, res: Res) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
-        const userSignedUp: UserData = await createUser({
+        const userSignedUp: any = await createUser({
             username,
             email,
             password: hashedPassword,
@@ -88,8 +88,8 @@ export const createNewUser = async (req: Req, res: Res) => {
     if (Object.keys(authorizationErrors).length > 0)
         return res.status(401).json(authorizationErrors)
 
-    const userFromUsername: UserData = await getUserByUsername(username)
-    const userFromEmail: UserData = await getUserByEmail(email)
+    const userFromUsername: any = await getUserByUsername(username)
+    const userFromEmail: any = await getUserByEmail(email)
 
     if (userFromUsername || userFromEmail)
         return res.status(404).json({ error: 'This user already exists' })
@@ -97,7 +97,7 @@ export const createNewUser = async (req: Req, res: Res) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
-        const createdUser: UserData = await createUser({
+        const createdUser: any = await createUser({
             username,
             email,
             password: hashedPassword,
@@ -115,7 +115,7 @@ export const deleteUser = async (req: Req, res: Res) => {
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
 
     const userInfo: UserData = jwt_decode(token)
-    const userFromRequest: UserData = await getUserById(userInfo.userId)
+    const userFromRequest: any = await getUserById(userInfo.userId)
     const authorizationErrors = isAdmin(userInfo.role)
 
     if (Object.keys(authorizationErrors).length > 0)
@@ -136,7 +136,7 @@ export const updateUser = async (req: Req, res: Res) => {
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
     const userInfo: UserData = jwt_decode(token)
-    const userFromRequest: UserData = await getUserById(userInfo.userId)
+    const userFromRequest: any = await getUserById(userInfo.userId)
 
     const emptyErrors = isEmpty({
         username,
@@ -159,7 +159,7 @@ export const updateUser = async (req: Req, res: Res) => {
     if (Object.keys(authorizationErrors).length > 0)
         return res.status(401).json(authorizationErrors)
 
-    const userForUpdate = await getUserById(id)
+    const userForUpdate : any = await getUserById(id)
     const hierarchyErrors = isAdmin(userForUpdate)
 
     if (Object.keys(hierarchyErrors).length > 0)
@@ -168,7 +168,7 @@ export const updateUser = async (req: Req, res: Res) => {
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
-        const updatedUser: UserData = await updateUserById(id, {
+        const updatedUser: any = await updateUserById(id, {
             username,
             email,
             password: hashedPassword,

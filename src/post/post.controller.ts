@@ -14,7 +14,7 @@ export const createNewPost = async (req: Req, res: Res) => {
     if (Object.keys(emptyErrors).length > 0)
         return res.status(400).json(emptyErrors)
 
-    const userFromRequest: UserData = await getUserById(userInfo.userId)
+    const userFromRequest: any = await getUserById(userInfo.userId)
 
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
 
@@ -41,15 +41,15 @@ export const removePost = async (req: Req, res: Res) => {
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
     const userInfo: UserData = jwt_decode(token)
 
-    const userFromRequest: UserData = await getUserById(userInfo.userId)
+    const userFromRequest: any = await getUserById(userInfo.userId)
 
     if (!userFromRequest) return res.status(401).json({ error: 'Unauthorized' })
 
-    const post: PostData = await getPostById(id)
+    const post: any = await getPostById(id)
     if (!post) return res.status(404).json({ error: 'Not Found' })
 
     try {
-        const deletedPost: PostData = await removePostById(id)
+        const deletedPost: any = await removePostById(id)
         return res.status(200).json(deletedPost)
     } catch (error) {
         return res.status(500).json(error)
