@@ -18,3 +18,7 @@ export const removePostById = async (id: string) => {
 export const getPostById = async (id: string) => {
     return await Post.findById(id)
 }
+
+export const getPosts = async () => {
+    return await Post.find();
+}

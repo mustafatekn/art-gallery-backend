@@ -6,7 +6,7 @@ import {
     deleteUser,
     updateUser,
 } from './user/user.controller'
-import { createNewPost, removePost } from './post/post.controller'
+import { createNewPost, getAllPosts, removePost } from './post/post.controller'
 
 export const router = express.Router()
 
@@ -18,5 +18,6 @@ router.delete('/auth/user/:id', deleteUser)
 router.put('/auth/user/:id', updateUser)
 
 // Post Routes
+router.get('/posts', getAllPosts)
 router.post('/post/createPost', createNewPost)
 router.delete('/post/:id', removePost)

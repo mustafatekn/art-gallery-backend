@@ -1,9 +1,18 @@
-import { createPost, getPostById, removePostById } from './post.service'
+import { createPost, getPostById, removePostById, getPosts } from './post.service'
 import { isEmpty } from '../util/validate'
 import jwt_decode from 'jwt-decode'
 import { UserData, PostData, Req, Res } from '../types'
 import { getUserById } from '../user/user.service'
 // import { v2 as cloudinary } from 'cloudinary'
+
+export const getAllPosts = async (req: Req, res: Res) => {
+    try{
+        const posts : any = await getPosts();
+        return res.status(200).json(posts);
+    }catch(error){
+        return res.status(500).json(error)
+    }
+};
 
 export const createNewPost = async (req: Req, res: Res) => {
     const { title, url, imageUrl } = req.body
