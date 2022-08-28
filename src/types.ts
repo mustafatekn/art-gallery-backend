@@ -28,6 +28,7 @@ export type UserRegister = {
 }
 
 export type DataForValidation = {
+    name?: string
     username?: string
     email?: string
     password?: string
@@ -36,6 +37,9 @@ export type DataForValidation = {
     title?: string
     url?: string
     imageUrl?: string
+    phone?: string
+    subject?: string
+    message?: string
 }
 
 export type Error = {
