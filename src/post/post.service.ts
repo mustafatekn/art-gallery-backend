@@ -20,5 +20,9 @@ export const getPostById = async (id: string) => {
 }
 
 export const getPosts = async () => {
-    return await Post.find();
+    return await Post.find()
+}
+
+export const getPostByURL = async (url: string) => {
+    return await Post.findOne({ url })
 }

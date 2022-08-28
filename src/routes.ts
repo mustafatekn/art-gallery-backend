@@ -6,7 +6,7 @@ import {
     deleteUser,
     updateUser,
 } from './user/user.controller'
-import { createNewPost, getAllPosts, removePost } from './post/post.controller'
+import { createNewPost, getAllPosts, getPostByUrl, removePost } from './post/post.controller'
 
 export const router = express.Router()
 
@@ -19,5 +19,6 @@ router.put('/auth/user/:id', updateUser)
 
 // Post Routes
 router.get('/posts', getAllPosts)
+router.get('/post/:url', getPostByUrl);
 router.post('/post/createPost', createNewPost)
 router.delete('/post/:id', removePost)

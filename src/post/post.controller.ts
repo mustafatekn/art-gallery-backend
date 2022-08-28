@@ -1,4 +1,4 @@
-import { createPost, getPostById, removePostById, getPosts } from './post.service'
+import { createPost, getPostById, removePostById, getPosts, getPostByURL } from './post.service'
 import { isEmpty } from '../util/validate'
 import jwt_decode from 'jwt-decode'
 import { UserData, PostData, Req, Res } from '../types'
@@ -62,6 +62,19 @@ export const removePost = async (req: Req, res: Res) => {
         return res.status(200).json(deletedPost)
     } catch (error) {
         return res.status(500).json(error)
+    }
+}
+
+export const getPostByUrl = async (req: Req, res: Res) => {
+    const { url } = req.params;
+    
+    try{
+       const post:any =  await getPostByURL(url);
+       if(!post) return res.status(404).json({error: 'Post not found'});
+
+       return res.status(200).json(post);
+    }catch(error){
+        return res.status(500).json(error);
     }
 }
 
