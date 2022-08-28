@@ -16,3 +16,7 @@ export const createTicket = async ({
     })
     return await ticket.save()
 }
+
+export const getTickets = async () => {
+    return await Ticket.find()
+}
