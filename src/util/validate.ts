@@ -34,7 +34,7 @@ export const isEmail = (email: string) => {
 
     const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    if (!emailRegExp.test(String(email))) errors.email = 'Email cannot be empty'
+    if (!emailRegExp.test(String(email))) errors.email = 'Email must be in email format.'
 
     return errors
 }
