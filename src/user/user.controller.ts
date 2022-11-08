@@ -64,7 +64,7 @@ export const signIn = async (req: Req, res: Res) => {
 
     const userId = user.get('id')
     const role = user.get('role')
-    const jwtSecret: Env = process.env.JWT_SECRET as string
+    const jwtSecret: Env = process.env.JWT_SECRET!
     const token = jwt.sign({ userId, username, role }, jwtSecret, {
         expiresIn: '7d',
     })
@@ -76,7 +76,8 @@ export const createNewUser = async (req: Req, res: Res) => {
     const { username, email, password, role } = req.body
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const secretKey: Secret = process.env.JWT_SECRET || ''
+
+    const secretKey: Secret = process.env.JWT_SECRET!
     let userInfo: any = {}
 
     try {
@@ -123,7 +124,8 @@ export const deleteUser = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const secretKey: Secret = process.env.JWT_SECRET || ''
+
+    const secretKey: Secret = process.env.JWT_SECRET!
     let userInfo: any = {}
 
     try {
@@ -152,7 +154,8 @@ export const updateUser = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const secretKey: Secret = process.env.JWT_SECRET || ''
+
+    const secretKey: Secret = process.env.JWT_SECRET!
     let userInfo: any = {}
 
     try {

@@ -1,23 +1,40 @@
-import { createPost, getPostById, removePostById, getPosts, getPostByURL } from './post.service'
+import {
+    createPost,
+    getPostById,
+    removePostById,
+    getPosts,
+    getPostByURL,
+} from './post.service'
 import { isEmpty } from '../util/validate'
-import jwt_decode from 'jwt-decode'
-import { UserData, PostData, Req, Res } from '../types'
+import jwt from 'jsonwebtoken'
+import { PostData, Req, Res } from '../types'
 import { getUserById } from '../user/user.service'
+import { Secret } from 'jsonwebtoken'
 // import { v2 as cloudinary } from 'cloudinary'
 
 export const getAllPosts = async (req: Req, res: Res) => {
-    try{
-        const posts : any = await getPosts();
-        return res.status(200).json(posts);
-    }catch(error){
+    try {
+        const posts: any = await getPosts()
+        return res.status(200).json(posts)
+    } catch (error) {
         return res.status(500).json(error)
     }
-};
+}
 
 export const createNewPost = async (req: Req, res: Res) => {
     const { title, url, imageUrl } = req.body
     const token = req.get('Authorization')
-    const userInfo: UserData = jwt_decode(token!)
+    if (!token) return res.status(401).json({ error: 'Unauthorized' })
+
+    const secretKey: Secret = process.env.JWT_SECRET!
+    let userInfo: any = {}
+
+    try {
+        userInfo = jwt.verify(token.split(' ')[1], secretKey)
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' })
+    }
+
     const emptyErrors = isEmpty({ title, url, imageUrl })
 
     if (Object.keys(emptyErrors).length > 0)
@@ -48,7 +65,15 @@ export const removePost = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const userInfo: UserData = jwt_decode(token)
+
+    const secretKey: Secret = process.env.JWT_SECRET!
+    let userInfo: any = {}
+
+    try {
+        userInfo = jwt.verify(token.split(' ')[1], secretKey)
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' })
+    }
 
     const userFromRequest: any = await getUserById(userInfo.userId)
 
@@ -66,15 +91,15 @@ export const removePost = async (req: Req, res: Res) => {
 }
 
 export const getPostByUrl = async (req: Req, res: Res) => {
-    const { url } = req.params;
-    
-    try{
-       const post:any =  await getPostByURL(url);
-       if(!post) return res.status(404).json({error: 'Post not found'});
+    const { url } = req.params
 
-       return res.status(200).json(post);
-    }catch(error){
-        return res.status(500).json(error);
+    try {
+        const post: any = await getPostByURL(url)
+        if (!post) return res.status(404).json({ error: 'Post not found' })
+
+        return res.status(200).json(post)
+    } catch (error) {
+        return res.status(500).json(error)
     }
 }
 
