@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import jwt_decode from 'jwt-decode'
+import jwt, { Secret } from 'jsonwebtoken'
+import dotenv from 'dotenv'
 import { isEmpty, isMatched, isEmail, isAdmin } from '../util/validate'
-import { UserData, Req, Res, Env, UserRegister } from '../types'
+import { Req, Res, Env, UserRegister } from '../types'
 import {
     createUser,
     getUserByEmail,
@@ -11,6 +11,8 @@ import {
     removeUserById,
     updateUserById,
 } from './user.service'
+
+dotenv.config()
 
 export const signUp = async (req: Req, res: Res) => {
     const { username, email, password, confirmPassword }: UserRegister =
@@ -74,7 +76,15 @@ export const createNewUser = async (req: Req, res: Res) => {
     const { username, email, password, role } = req.body
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const userInfo: UserData = jwt_decode(token)
+    const secretKey: Secret = process.env.JWT_SECRET || ''
+    let userInfo: any = {}
+
+    try {
+        userInfo = jwt.verify(token.split(' ')[1], secretKey)
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' })
+    }
+
     const authorizationErrors = isAdmin(userInfo.role)
     const emptyErrors = isEmpty({ username, email, password, role })
     const emailErrors = isEmail(email)
@@ -113,8 +123,15 @@ export const deleteUser = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
+    const secretKey: Secret = process.env.JWT_SECRET || ''
+    let userInfo: any = {}
 
-    const userInfo: UserData = jwt_decode(token)
+    try {
+        userInfo = jwt.verify(token.split(' ')[1], secretKey)
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' })
+    }
+
     const userFromRequest: any = await getUserById(userInfo.userId)
     const authorizationErrors = isAdmin(userInfo.role)
 
@@ -135,7 +152,15 @@ export const updateUser = async (req: Req, res: Res) => {
     const { id } = req.params
     const token = req.get('Authorization')
     if (!token) return res.status(401).json({ error: 'Unauthorized' })
-    const userInfo: UserData = jwt_decode(token)
+    const secretKey: Secret = process.env.JWT_SECRET || ''
+    let userInfo: any = {}
+
+    try {
+        userInfo = jwt.verify(token.split(' ')[1], secretKey)
+    } catch (error) {
+        return res.status(401).json({ error: 'Unauthorized' })
+    }
+
     const userFromRequest: any = await getUserById(userInfo.userId)
 
     const emptyErrors = isEmpty({
@@ -159,7 +184,7 @@ export const updateUser = async (req: Req, res: Res) => {
     if (Object.keys(authorizationErrors).length > 0)
         return res.status(401).json(authorizationErrors)
 
-    const userForUpdate : any = await getUserById(id)
+    const userForUpdate: any = await getUserById(id)
     const hierarchyErrors = isAdmin(userForUpdate)
 
     if (Object.keys(hierarchyErrors).length > 0)
