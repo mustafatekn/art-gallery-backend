@@ -13,6 +13,7 @@ import {
     removePost,
 } from './post/post.controller'
 import { createNewTicket, getAllTickets } from './ticket/ticket.controller'
+import { checkout } from './checkout/checkout.controller'
 
 export const router = express.Router()
 
@@ -32,3 +33,6 @@ router.delete('/post/:id', removePost)
 //Ticket Routes
 router.post('/ticket', createNewTicket)
 router.get('/tickets', getAllTickets)
+
+//Checkout Routes
+router.post('/checkout', checkout)
