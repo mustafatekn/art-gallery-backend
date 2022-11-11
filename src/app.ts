@@ -3,7 +3,7 @@ import cors from 'cors'
 import moongose, { ConnectOptions } from 'mongoose'
 import dotenv from 'dotenv'
 import { router } from './routes'
-import { Env, Req, Res } from './types'
+import { Env } from './types'
 
 dotenv.config()
 const app = express()
