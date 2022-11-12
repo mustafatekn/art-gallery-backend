@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import {
     signUp,
     signIn,
@@ -35,4 +36,11 @@ router.post('/ticket', createNewTicket)
 router.get('/tickets', getAllTickets)
 
 //Checkout route
-router.post('/checkout', checkout);
+router.post(
+    '/checkout',
+    cors({
+        origin: 'https://sandbox-api.iyzipay.com',
+        optionsSuccessStatus: 200,
+    }),
+    checkout
+)

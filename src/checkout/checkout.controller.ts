@@ -7,7 +7,7 @@ dotenv.config()
 var iyzipay = new Iyzipay({
     apiKey: process.env.IYZICO_API_KEY,
     secretKey: process.env.IYZICO_SECRET_KEY,
-    uri: 'https://sandbox-api.iyzipay.com',
+    uri: process.env.IYZICO_URI,
 })
 
 //Example
@@ -97,9 +97,9 @@ export const checkout = (req: Req, res: Res) => {
         } else {
             const error = {
                 code: result.errorCode,
-                message: result.errorMessage
+                message: result.errorMessage,
             }
-            return res.status(400).json(error);
+            return res.status(400).json(error)
         }
     })
 }
