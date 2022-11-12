@@ -1,5 +1,4 @@
 import express from 'express'
-// import cors from 'cors'
 import {
     signUp,
     signIn,
@@ -14,7 +13,7 @@ import {
     removePost,
 } from './post/post.controller'
 import { createNewTicket, getAllTickets } from './ticket/ticket.controller'
-// import { checkout } from './checkout/checkout.controller'
+import { checkout } from './checkout/checkout.controller'
 
 export const router = express.Router()
 
@@ -35,12 +34,5 @@ router.delete('/post/:id', removePost)
 router.post('/ticket', createNewTicket)
 router.get('/tickets', getAllTickets)
 
-// //Checkout route
-// router.post(
-//     '/checkout',
-//     cors({
-//         origin: 'https://sandbox-api.iyzipay.com',
-//         optionsSuccessStatus: 200,
-//     }),
-//     checkout
-// )
+//Checkout route
+router.post('/checkout', checkout)
