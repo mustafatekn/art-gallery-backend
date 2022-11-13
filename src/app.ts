@@ -8,7 +8,7 @@ import { Env } from './types'
 dotenv.config()
 const app = express()
 
-var corsOptions = {
+const corsOptions = {
     origin: ["https://art-gallery-frontend.vercel.app", "http://localhost:3000","https://sandbox-api.iyzipay.com"],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
