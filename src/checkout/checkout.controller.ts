@@ -13,13 +13,18 @@ var iyzipay = new Iyzipay({
 //Example
 
 export const checkout = (req: Req, res: Res) => {
-    const { cardNumber, cardHolderName, expireYear, expireMonth, cvc } =
-        req.body.paymentCard
-    const { price } = req.body
+    var Iyzipay = require('iyzipay')
+
+    var iyzipay = new Iyzipay({
+        apiKey: 'your api key',
+        secretKey: 'your secret key',
+        uri: 'https://sandbox-api.iyzipay.com',
+    })
+
     var request = {
         locale: Iyzipay.LOCALE.TR,
         conversationId: '123456789',
-        price: price,
+        price: '1',
         paidPrice: '1.2',
         currency: Iyzipay.CURRENCY.TRY,
         installment: '1',
@@ -27,11 +32,11 @@ export const checkout = (req: Req, res: Res) => {
         paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
         paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
         paymentCard: {
-            cardHolderName,
-            cardNumber,
-            expireMonth,
-            expireYear,
-            cvc,
+            cardHolderName: 'John Doe',
+            cardNumber: '5528790000000008',
+            expireMonth: '12',
+            expireYear: '2030',
+            cvc: '123',
             registerCard: '0',
         },
         buyer: {
@@ -91,7 +96,9 @@ export const checkout = (req: Req, res: Res) => {
             },
         ],
     }
+
     iyzipay.payment.create(request, function (err: any, result: any) {
+        console.log(err, result)
         if (result.status === 'success') {
             return res.status(201).json(result)
         } else {
