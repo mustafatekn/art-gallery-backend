@@ -4,21 +4,13 @@ var Iyzipay = require('iyzipay')
 
 dotenv.config()
 
-var iyzipay = new Iyzipay({
-    apiKey: process.env.IYZICO_API_KEY,
-    secretKey: process.env.IYZICO_SECRET_KEY,
-    uri: process.env.IYZICO_URI,
-})
-
 //Example
 
 export const checkout = (req: Req, res: Res) => {
-    var Iyzipay = require('iyzipay')
-
     var iyzipay = new Iyzipay({
-        apiKey: 'your api key',
-        secretKey: 'your secret key',
-        uri: 'https://sandbox-api.iyzipay.com',
+        apiKey: process.env.IYZICO_API_KEY,
+        secretKey: process.env.IYZICO_SECRET_KEY,
+        uri: process.env.IYZICO_URI,
     })
 
     var request = {
