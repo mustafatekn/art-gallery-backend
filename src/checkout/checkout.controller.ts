@@ -4,19 +4,22 @@ var Iyzipay = require('iyzipay')
 
 dotenv.config()
 
+var iyzipay = new Iyzipay({
+    apiKey: process.env.IYZICO_API_KEY,
+    secretKey: process.env.IYZICO_SECRET_KEY,
+    uri: process.env.IYZICO_URI,
+})
+
 //Example
 
 export const checkout = (req: Req, res: Res) => {
-    var iyzipay = new Iyzipay({
-        apiKey: process.env.IYZICO_API_KEY,
-        secretKey: process.env.IYZICO_SECRET_KEY,
-        uri: process.env.IYZICO_URI,
-    })
-
+    const { cardNumber, cardHolderName, expireYear, expireMonth, cvc } =
+        req.body.paymentCard
+    const { price } = req.body
     var request = {
         locale: Iyzipay.LOCALE.TR,
         conversationId: '123456789',
-        price: '1',
+        price: price,
         paidPrice: '1.2',
         currency: Iyzipay.CURRENCY.TRY,
         installment: '1',
@@ -24,11 +27,11 @@ export const checkout = (req: Req, res: Res) => {
         paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
         paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
         paymentCard: {
-            cardHolderName: 'John Doe',
-            cardNumber: '5528790000000008',
-            expireMonth: '12',
-            expireYear: '2030',
-            cvc: '123',
+            cardHolderName,
+            cardNumber,
+            expireMonth,
+            expireYear,
+            cvc,
             registerCard: '0',
         },
         buyer: {
@@ -88,9 +91,7 @@ export const checkout = (req: Req, res: Res) => {
             },
         ],
     }
-
     iyzipay.payment.create(request, function (err: any, result: any) {
-        console.log(err, result)
         if (result.status === 'success') {
             return res.status(201).json(result)
         } else {
