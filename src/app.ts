@@ -9,7 +9,7 @@ dotenv.config()
 const app = express()
 
 var corsOptions = {
-    origin: ["https://art-gallery-frontend.vercel.app", "http://localhost:3000"],
+    origin: ["https://art-gallery-frontend.vercel.app", "http://localhost:3000","https://sandbox-api.iyzipay.com"],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
