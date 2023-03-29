@@ -8,7 +8,15 @@ import { Env } from './types'
 dotenv.config()
 const app = express()
 
-app.use(cors({ origin: '*' }))
+const corsOptions = {
+    origin: ["https://art-gallery-frontend.vercel.app", "http://localhost:3000","https://sandbox-api.iyzipay.com"],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
+
+
+app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/', router)
