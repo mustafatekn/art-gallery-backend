@@ -2,10 +2,7 @@
     "name": "art-gallery-backend",
     "version": "1.0.0",
     "description": "",
-    "main": "src/app.js",
-    "engines": {
-        "node": "14.x"
-    },
+    "main": "build/app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "ts-node-dev src/app.ts",
