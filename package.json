@@ -14,7 +14,8 @@
         "lint:check": "eslint src/**.ts",
         "lint:fix": "eslint --fix src/**.ts",
         "start": "node build/app.js",
-        "postinstall": "tsc"
+        "postinstall": "tsc",
+        "build":"tsc"
     },
     "keywords": [],
     "author": "",
