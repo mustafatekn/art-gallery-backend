@@ -13,7 +13,7 @@ import {
     removePost,
 } from './post/post.controller'
 import { createNewTicket, getAllTickets } from './ticket/ticket.controller'
-// import { checkout } from './checkout/checkout.controller'
+import { checkout } from './checkout/checkout.controller'
 
 export const router = express.Router()
 
@@ -35,4 +35,4 @@ router.post('/ticket', createNewTicket)
 router.get('/tickets', getAllTickets)
 
 //Checkout route
-// router.post('/checkout', checkout)
+router.post('/checkout', checkout)
