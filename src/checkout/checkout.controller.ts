@@ -13,6 +13,10 @@ var iyzipay = new Iyzipay({
 //Example
 
 export const checkout = (req: Req, res: Res) => {
+    // @ts-ignore
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    
     const { cardNumber, cardHolderName, expireYear, expireMonth, cvc } =
         req.body.paymentCard
     const { price } = req.body
