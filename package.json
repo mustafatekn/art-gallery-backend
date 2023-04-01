@@ -10,7 +10,7 @@
         "format:write": "prettier --write src/**",
         "lint:check": "eslint src/**.ts",
         "lint:fix": "eslint --fix src/**.ts",
-        "build":"tsc"
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",
@@ -21,6 +21,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
+        "iyzipay": "^2.0.48",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.10.4"
     },
