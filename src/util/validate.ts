@@ -1,4 +1,4 @@
-import { DataForValidation, Error } from '../types';
+import { DataForValidation, Error } from '../types'
 
 export const isEmpty = (data: DataForValidation) => {
     let errors: Error = {}
@@ -34,7 +34,8 @@ export const isEmail = (email: string) => {
 
     const emailRegExp =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-    if (!emailRegExp.test(String(email))) errors.email = 'Email must be in email format.'
+    if (!emailRegExp.test(String(email)))
+        errors.email = 'Email must be in email format.'
 
     return errors
 }

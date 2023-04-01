@@ -99,7 +99,7 @@ export const getPostByUrl = async (req: Req, res: Res) => {
 
         return res.status(200).json(post)
     } catch (error) {
-        throw error;
+        throw error
         return res.status(500).json(error)
     }
 }
