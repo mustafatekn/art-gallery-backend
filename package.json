@@ -1,8 +1,8 @@
 {
     "name": "art-gallery-backend",
     "version": "1.0.0",
-    "description": "",
-    "main": "src/app.js",
+    "description": "Rixusart Rest API to deploy in Vercel(Typescript, Express, MongoDB",
+    "main": "build/app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "ts-node-dev src/app.ts",
@@ -10,8 +10,6 @@
         "format:write": "prettier --write src/**",
         "lint:check": "eslint src/**.ts",
         "lint:fix": "eslint --fix src/**.ts",
-        "start": "node build/app.js",
-        "postinstall": "tsc",
         "build":"tsc"
     },
     "keywords": [],
