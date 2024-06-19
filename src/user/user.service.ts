@@ -5,13 +5,13 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-    constructor(
-        @InjectModel(User.name) private readonly userModel: Model<User>
-    ) { }
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+  ) {}
 
-    async getUserByUsername(username: string) {
-        const user = await this.userModel.findOne({ username });
-        if (!user) throw new NotFoundException();
-        return user;
-    }
+  async getUserByUsername(username: string) {
+    const user = await this.userModel.findOne({ username });
+    if (!user) throw new NotFoundException();
+    return user;
+  }
 }
