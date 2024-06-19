@@ -1,0 +1,17 @@
+{
+    "name": "art-gallery-backend",
+    "version": 2,
+    "public": true,
+    "builds": [
+        {
+            "src": "src/main.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "src/main.js"
+        }
+    ]
+}
