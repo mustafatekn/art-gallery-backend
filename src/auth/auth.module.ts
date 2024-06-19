@@ -9,4 +9,4 @@ import { ConfigModule } from '@nestjs/config';
   providers: [AuthService],
   controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule { }
