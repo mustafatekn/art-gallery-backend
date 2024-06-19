@@ -5,8 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Ticket, TicketSchema } from 'src/ticket/schemas/ticket.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Ticket.name, schema: TicketSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Ticket.name, schema: TicketSchema }]),
+  ],
   providers: [TicketService],
-  controllers: [TicketController]
+  controllers: [TicketController],
 })
-export class TicketModule { }
+export class TicketModule {}
