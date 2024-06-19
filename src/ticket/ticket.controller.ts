@@ -1,35 +1,37 @@
-import { createTicket, getTickets } from './ticket.service'
-import { isEmpty } from '../util/validate'
-import { Req, Res } from '../types'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, UseGuards } from '@nestjs/common';
+import { TicketService } from './ticket.service';
+import { CreateTicketDto } from './dtos/create-ticket.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard.ts';
 
-export const createNewTicket = async (req: Req, res: Res) => {
-    const { name, email, phone, subject, message } = req.body
-    const emptyErrors = isEmpty({ name, email, phone, subject, message })
+@Controller('ticket')
+export class TicketController {
+    constructor(private readonly ticketService: TicketService) { }
 
-    if (Object.keys(emptyErrors).length > 0)
-        return res.status(400).json(emptyErrors)
-
-    try {
-        const createdTicket: any = await createTicket({
-            name,
-            email,
-            phone,
-            subject,
-            message,
-        })
-        return res.status(201).json(createdTicket)
-    } catch (error) {
-        return res.status(500).json(error)
+    @Get()
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard)
+    getTickets() {
+        return this.ticketService.getTickets();
     }
-}
 
-export const getAllTickets = async (req: Req, res: Res) => {
-    try {
-        const tickets: any = await getTickets()
-        if (tickets.length === 0)
-            return res.status(404).json({ error: 'No ticket found' })
-        return res.status(200).json(tickets)
-    } catch (error) {
-        return res.status(500).json(error)
+    @Get(':id')
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard)
+    getTicketById(@Param('id') id: string) {
+        return this.ticketService.getTicketById(id);
+    }
+
+    @Post()
+    @HttpCode(HttpStatus.CREATED)
+    createTicket(@Body() body: CreateTicketDto) {
+        return this.ticketService.createTicket(body);
+    }
+
+    @Delete()
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard)
+    deleteTickets(@Body() body: { ids: string[] }) {
+        const { ids } = body;
+        return this.ticketService.deleteTickets(ids);
     }
 }
